@@ -2,9 +2,10 @@ FROM ubuntu
 
 RUN apt-get update &&\
 	apt-get install -y \
-	git-core \
 	bats \
-	mc \
 	curl \
+	figlet \
+	git-core \
+	mc \
 	wget
 
