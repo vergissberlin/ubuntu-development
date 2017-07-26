@@ -7,5 +7,5 @@ RUN apt-get update &&\
 	figlet \
 	git-core \
 	mc \
-	wget
-
+	wget \
+	vim
