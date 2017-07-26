@@ -6,6 +6,7 @@ RUN apt-get update &&\
 	curl \
 	figlet \
 	git-core \
+	make \
 	mc \
 	wget \
 	vim
