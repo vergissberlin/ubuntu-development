@@ -1,14 +1,16 @@
 # ubuntu-development
 
-    Docker ubuntu image to use for development, testing and deployment.
+> Docker ubuntu image to use for development, testing and deployment.
 
-| Docker base image | Docker image            | Tag            |
-| ----------------- | ----------------------- | -------------- |
-| [ubuntu][1]       | [ubuntu-development][2] | [latest][3]    |
+| Docker base image   | Docker image              | Tag               | Size   |
+| ------------------- | ------------------------- | ----------------- | ------ |
+| [ubuntu][1]         | [ubuntu-development][2]   | [latest][3]       | ![][4] |
 
 [1]: https://hub.docker.com/_/ubuntu/
 [2]: https://hub.docker.com/r/vergissberlin/ubuntu-development/
 [3]: https://hub.docker.com/r/vergissberlin/ubuntu-development/tags/
+[4]: https://images.microbadger.com/badges/image/vergissberlin/ubuntu-development.svg
+
 
 ## Promise
 
