@@ -10,9 +10,9 @@
 [2]: https://hub.docker.com/r/vergissberlin/ubuntu-development/
 [3]: https://hub.docker.com/r/vergissberlin/ubuntu-development/tags/
 [4]: https://images.microbadger.com/badges/image/vergissberlin/ubuntu-development.svg
-[5]: https://img.shields.io/docker/pulls/vergissberlin/centos-development.svg?style=flat-square
-[6]: https://img.shields.io/docker/automated/vergissberlin/centos-development.svg?style=flat-square
-[7]: https://img.shields.io/docker/build/vergissberlin/centos-development.svg?style=flat-square
+[5]: https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development.svg?style=flat-square
+[6]: https://img.shields.io/docker/automated/vergissberlin/ubuntu-development.svg?style=flat-square
+[7]: https://img.shields.io/docker/build/vergissberlin/ubuntu-development.svg?style=flat-square
 
 
 ## Promise
