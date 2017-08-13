@@ -8,5 +8,6 @@ RUN apt-get update &&\
 	git-core \
 	make \
 	mc \
+	siege \
 	wget \
 	vim
