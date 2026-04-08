@@ -1,12 +1,11 @@
 # ubuntu-development
 
+[![Build](https://img.shields.io/github/actions/workflow/status/vergissberlin/ubuntu-development/docker-publish.yml?branch=main&style=flat-square)](https://github.com/vergissberlin/ubuntu-development/actions/workflows/docker-publish.yml)
 Docker Ubuntu image for development, testing, and deployment tasks.
 
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-vergissberlin%2Fubuntu--development-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-vergissberlin%2Fubuntu--development-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/vergissberlin/ubuntu-development) [![Docker Pulls](https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development?style=flat-square)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
+
 [![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fvergissberlin%2Fubuntu--development-181717?logo=github&logoColor=white)](https://github.com/vergissberlin/ubuntu-development/pkgs/container/ubuntu-development)
-[![Docker Pulls](https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development?style=flat-square)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
-[![GitHub Container Package](https://img.shields.io/badge/GitHub%20Packages-ubuntu--development-181717?logo=github&logoColor=white&style=flat-square)](https://github.com/vergissberlin/ubuntu-development/pkgs/container/ubuntu-development)
-[![Build](https://img.shields.io/github/actions/workflow/status/vergissberlin/ubuntu-development/docker-publish.yml?branch=main&style=flat-square)](https://github.com/vergissberlin/ubuntu-development/actions/workflows/docker-publish.yml)
 
 ## Supported tags
 
