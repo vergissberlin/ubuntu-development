@@ -15,29 +15,6 @@ Docker Ubuntu image for development, testing, and deployment tasks.
 
 Version-specific tags are recommended for reproducible environments.
 
-## Publish pipeline
-
-Images are built and published from this repository via GitHub Actions:
-
-- Release orchestration: `.github/workflows/release-please.yml`
-- Workflow: `.github/workflows/docker-publish.yml`
-- Trigger: push to `main`, SemVer tags (`*.*.*`), and manual `workflow_dispatch`
-- Registry: Docker Hub `vergissberlin/ubuntu-development`
-
-### Release flow
-
-1. Merge Conventional Commit changes into `main`.
-2. Release Please updates or creates a release PR with version bump metadata and `CHANGELOG.md`.
-3. Merge the release PR to create a GitHub Release and tag (`X.Y.Z`).
-4. The Docker publish workflow runs on that tag and publishes `vergissberlin/ubuntu-development:X.Y.Z`.
-
-`CHANGELOG.md` is maintained automatically from Conventional Commit history.
-
-### Required repository secrets
-
-- `DOCKERHUB_USERNAME`
-- `DOCKERHUB_TOKEN`
-
 ## Usage
 
 ```bash
@@ -92,3 +69,9 @@ docker run -it vergissberlin/ubuntu-development:22.04 bash
 [45]: https://hub.docker.com/r/vergissberlin/fedora-development/
 [50]: https://github.com/vergissberlin/opensuse-development
 [55]: https://hub.docker.com/r/vergissberlin/opensuse-development/
+
+---
+
+## Contributing
+
+Contribution and release details are documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
