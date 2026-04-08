@@ -53,6 +53,7 @@ Optional utilities may change over time to keep the image security posture stron
 - [`figlet`](http://www.figlet.org/) - Creates ASCII art text banners for terminal output.
 - [`git`](https://git-scm.com/doc) - Distributed version control system for source code management.
 - [`just`](https://just.systems/man/en/) - Command runner to define and execute project tasks.
+- [`k6`](https://grafana.com/docs/k6/latest/) - Modern load testing tool for API and performance testing.
 - [`make`](https://www.gnu.org/software/make/manual/) - Build automation tool based on declarative rules.
 - [`mc`](https://midnight-commander.org/wiki/doc) - Midnight Commander terminal file manager.
 - [`siege`](https://www.joedog.org/siege-manual/) - HTTP load testing and benchmarking utility.
@@ -101,5 +102,5 @@ Contribution and release details are documented in [`CONTRIBUTING.md`](CONTRIBUT
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 bash -lc "git --version && just --version && bats --version"
+docker run --rm local/ubuntu-development:24.04 bash -lc "git --version && just --version && k6 version && bats --version"
 ```

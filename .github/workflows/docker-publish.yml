@@ -62,6 +62,7 @@ jobs:
             git --version >/dev/null &&
             curl --version >/dev/null &&
             just --version >/dev/null &&
+            k6 version >/dev/null &&
             bats --version >/dev/null
           '
 
