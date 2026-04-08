@@ -7,11 +7,14 @@ RUN apt-get update && \
     bats \
     ca-certificates \
     curl \
+    fd-find \
     figlet \
     git \
     make \
     mc \
+    ripgrep \
     siege \
+    unzip \
     wget && \
     if apt-cache show just >/dev/null 2>&1; then \
     apt-get install -y --no-install-recommends just; \
@@ -48,5 +51,22 @@ RUN apt-get update && \
     tar -xzf "${K6_ARCHIVE}" -C /tmp; \
     mv "/tmp/${K6_DIR}/k6" /usr/local/bin/k6; \
     chmod +x /usr/local/bin/k6; \
-    rm -rf "/tmp/${K6_ARCHIVE}" "/tmp/k6-checksums.txt" "/tmp/${K6_DIR}" && \
+    rm -rf "/tmp/${K6_ARCHIVE}" "/tmp/k6-checksums.txt" "/tmp/${K6_DIR}"; \
+    NVIM_VERSION="0.11.4"; \
+    ARCH="$(dpkg --print-architecture)"; \
+    case "${ARCH}" in \
+    amd64) NVIM_TARGET="x86_64"; NVIM_SHA256="a74740047e73b2b380d63a474282814063d10650cd6cc95efa16d1713c7e616c" ;; \
+    arm64) NVIM_TARGET="arm64"; NVIM_SHA256="684e4262d2296e469cb43f0d05edbbb52b960b7f117bed6b22936fc768993cd9" ;; \
+    *) echo "Unsupported architecture for neovim: ${ARCH}" && exit 1 ;; \
+    esac; \
+    NVIM_ARCHIVE="nvim-linux-${NVIM_TARGET}.tar.gz"; \
+    curl -fsSLo "/tmp/${NVIM_ARCHIVE}" "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/${NVIM_ARCHIVE}"; \
+    echo "${NVIM_SHA256}  /tmp/${NVIM_ARCHIVE}" | sha256sum --check --status; \
+    tar -xzf "/tmp/${NVIM_ARCHIVE}" -C /tmp; \
+    cp -a "/tmp/nvim-linux-${NVIM_TARGET}/." /usr/local/; \
+    ln -sf /usr/bin/fdfind /usr/local/bin/fd; \
+    rm -rf /root/.config/nvim /root/.local/share/nvim /root/.local/state/nvim /root/.cache/nvim; \
+    git clone --depth 1 https://github.com/AstroNvim/template /root/.config/nvim; \
+    rm -rf /root/.config/nvim/.git; \
+    rm -rf "/tmp/${NVIM_ARCHIVE}" "/tmp/nvim-linux-${NVIM_TARGET}" && \
     rm -rf /var/lib/apt/lists/*

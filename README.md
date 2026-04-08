@@ -56,6 +56,8 @@ Optional utilities may change over time to keep the image security posture stron
 - [`k6`](https://grafana.com/docs/k6/latest/) - Modern load testing tool for API and performance testing.
 - [`make`](https://www.gnu.org/software/make/manual/) - Build automation tool based on declarative rules.
 - [`mc`](https://midnight-commander.org/wiki/doc) - Midnight Commander terminal file manager.
+- [`neovim`](https://neovim.io/) - Modern Vim-based editor used as the AstroNvim runtime.
+- [`AstroNvim`](https://astronvim.com/) - Preconfigured Neovim distribution installed in `/root/.config/nvim`.
 - [`siege`](https://www.joedog.org/siege-manual/) - HTTP load testing and benchmarking utility.
 - [`wget`](https://www.gnu.org/software/wget/manual/wget.html) - Non-interactive downloader for HTTP, HTTPS, and FTP.
 
@@ -102,5 +104,5 @@ Contribution and release details are documented in [`CONTRIBUTING.md`](CONTRIBUT
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 bash -lc "git --version && just --version && k6 version && bats --version"
+docker run --rm local/ubuntu-development:24.04 bash -lc "git --version && just --version && k6 version && nvim --version | head -n 1 && bats --version"
 ```
