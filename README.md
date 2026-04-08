@@ -21,9 +21,20 @@ Version-specific tags are recommended for reproducible environments.
 
 Containers run as `root` by default and start with Oh My Zsh enabled.
 
+Tags ship as a **multi-arch manifest** (`linux/amd64` and `linux/arm64`). On **Apple Silicon**, pull or run the native variant so Docker does not emulate `amd64` (avoids slow runs and occasional `exec ... not found` quirks):
+
+```bash
+docker pull --platform linux/arm64 vergissberlin/ubuntu-development:24.04
+docker run --platform linux/arm64 -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
+On **Intel/AMD64** hosts you can omit `--platform` or set `linux/amd64` explicitly:
+
 ```bash
 docker run -it vergissberlin/ubuntu-development:24.04 zsh
 ```
+
+Use the same `--platform linux/arm64` pattern on Apple Silicon for `22.04`, GHCR, and `latest`.
 
 ```bash
 docker run -it vergissberlin/ubuntu-development:22.04 zsh
@@ -55,7 +66,14 @@ The image also ships a default global Git config in `/root/.gitconfig` (aliases,
 
 ### Apple Silicon (`linux/arm64`)
 
-Published tags are built for **`linux/amd64` and `linux/arm64`**, so `docker pull` on Apple Silicon should resolve a matching manifest. If you still see `no matching manifest for linux/arm64`, use a tag published after multi-arch landed, or temporarily force the amd64 variant (slower on Apple Silicon):
+Published tags are built for **`linux/amd64` and `linux/arm64`**. If you see **“platform does not match”** (client pulled `amd64`) or **`zsh: executable file not found`**, refresh and pin **`linux/arm64`**:
+
+```bash
+docker pull --platform linux/arm64 vergissberlin/ubuntu-development:24.04
+docker run --platform linux/arm64 -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
+Older tags may be **amd64-only** until republished; in that case either wait for a new publish or emulate (slower):
 
 ```bash
 docker run --platform linux/amd64 -it vergissberlin/ubuntu-development:24.04 zsh

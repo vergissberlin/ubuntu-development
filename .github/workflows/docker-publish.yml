@@ -34,9 +34,15 @@ jobs:
         ubuntu_version:
           - "22.04"
           - "24.04"
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@53851d14592bedcffcf25ea515637cff71ef929a
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd
@@ -47,17 +53,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          suffix=amd64
+          if [[ "${{ matrix.platform }}" == "linux/arm64" ]]; then suffix=arm64; fi
+          tag="local/ubuntu-development:${{ matrix.ubuntu_version }}-${suffix}"
           docker buildx build \
             --load \
+            --platform "${{ matrix.platform }}" \
             --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" \
-            -t "local/ubuntu-development:${{ matrix.ubuntu_version }}" \
+            -t "${tag}" \
             .
+          echo "VALIDATION_IMAGE_TAG=${tag}" >> "${GITHUB_ENV}"
 
       - name: Smoke test image
         shell: bash
         run: |
           set -euo pipefail
-          docker run --rm "local/ubuntu-development:${{ matrix.ubuntu_version }}" zsh -lc '
+          docker run --rm --platform "${{ matrix.platform }}" "${VALIDATION_IMAGE_TAG}" zsh -lc '
             zsh --version >/dev/null &&
             git --version >/dev/null &&
             curl --version >/dev/null &&
@@ -78,7 +89,7 @@ jobs:
             --ignore-unfixed \
             --exit-code 0 \
             --no-progress \
-            "local/ubuntu-development:${{ matrix.ubuntu_version }}"
+            "${VALIDATION_IMAGE_TAG}"
 
   docker:
     needs: validate
