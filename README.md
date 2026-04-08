@@ -67,6 +67,13 @@ docker run -it vergissberlin/ubuntu-development:22.04 bash
 
 [Docker Hub repository](https://hub.docker.com/r/vergissberlin/ubuntu-development/)
 
+### Tag links on Docker Hub
+
+- [`24.04`](https://hub.docker.com/r/vergissberlin/ubuntu-development/tags?name=24.04): Recommended default image for current Ubuntu LTS development.
+- [`latest`](https://hub.docker.com/r/vergissberlin/ubuntu-development/tags?name=latest): Alias that currently points to `24.04`.
+- [`22.04`](https://hub.docker.com/r/vergissberlin/ubuntu-development/tags?name=22.04): Previous Ubuntu LTS image for compatibility scenarios.
+- [`x.y.z` release tags](https://hub.docker.com/r/vergissberlin/ubuntu-development/tags): Immutable SemVer releases published from Git tags.
+
 ## Similar images
 
 - alpine-development: [git][10], [docker][15]
