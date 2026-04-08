@@ -49,6 +49,13 @@ Git identity from environment (smoke check):
 docker run --rm -e GIT_USER_NAME="Test User" -e GIT_USER_EMAIL="test@example.com" local/ubuntu-development:24.04 zsh -lc 'test "$(git config --global --get user.name)" = "Test User" && test "$(git config --global --get user.email)" = "test@example.com" && echo git_env_ok'
 ```
 
+Testing locally with interactive:
+
+```bash
+docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
+docker run --rm -it local/ubuntu-development:24.04 zsh -l
+```
+
 ## Registry usage
 
 - Docker Hub image: `vergissberlin/ubuntu-development:<tag>`
@@ -78,3 +85,5 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
   - Prefer a tag built with multi-arch (`linux/amd64` + `linux/arm64`). Until that image exists, use `docker run --platform linux/amd64 ...` as a workaround.
 - `exec: "zsh": executable file not found`:
   - The image must include the `zsh` package (see `Dockerfile`). Rebuild locally or wait for a new publish after that change merged.
+- Powerlevel10k shows empty boxes or missing folder icons in the prompt:
+  - The theme uses Nerd Font glyphs. Install a Nerd Font (e.g. [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)) and set **Cursor** or your terminal to use it (e.g. setting id `terminal.integrated.fontFamily` to `MesloLGS NF` or the exact PostScript name).

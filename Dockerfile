@@ -84,6 +84,7 @@ RUN apt-get update && \
 COPY dotfiles/etc/profile.d/git-config-global-from-env.sh /etc/profile.d/git-config-global-from-env.sh
 COPY dotfiles/etc/zsh/zprofile /etc/zsh/zprofile
 COPY dotfiles/root/.zshrc /root/.zshrc
+COPY dotfiles/root/.p10k.zsh /root/.p10k.zsh
 COPY dotfiles/root/.config/git/.gitignore_global /root/.config/git/.gitignore_global
 COPY dotfiles/root/.gitconfig /root/.gitconfig
 COPY dotfiles/root/.tmux.conf /root/.tmux.conf
