@@ -12,8 +12,13 @@ on:
 
 env:
   IMAGE_NAME: vergissberlin/ubuntu-development
+  GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
   DEFAULT_UBUNTU_VERSION: "24.04"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+permissions:
+  contents: read
+  packages: write
 
 concurrency:
   group: docker-publish-${{ github.ref }}
@@ -68,16 +73,34 @@ jobs:
           echo "Docker Hub login failed after 3 attempts"
           exit 1
 
+      - name: Log in to GHCR (with retry)
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            echo "GHCR login attempt ${attempt}/3"
+            if echo "${GHCR_TOKEN}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin; then
+              exit 0
+            fi
+            sleep $((attempt * 10))
+          done
+          echo "GHCR login failed after 3 attempts"
+          exit 1
+
       - name: Build and push (with retry)
         shell: bash
         run: |
           set -euo pipefail
           tags=(
             "-t" "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}"
-            "-t" "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}-${GITHUB_SHA::7}"
+            "-t" "${{ env.GHCR_IMAGE_NAME }}:${{ matrix.ubuntu_version }}"
           )
           if [[ "${{ steps.semver.outputs.semver_tag }}" != "" && "${{ matrix.ubuntu_version }}" == "${{ env.DEFAULT_UBUNTU_VERSION }}" ]]; then
             tags+=("-t" "${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}")
+            tags+=("-t" "${{ env.GHCR_IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}")
           fi
           for attempt in 1 2 3; do
             echo "Build attempt ${attempt}/3"
@@ -125,6 +148,23 @@ jobs:
           echo "Docker Hub login failed after 3 attempts"
           exit 1
 
+      - name: Log in to GHCR (with retry)
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            echo "GHCR login attempt ${attempt}/3"
+            if echo "${GHCR_TOKEN}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin; then
+              exit 0
+            fi
+            sleep $((attempt * 10))
+          done
+          echo "GHCR login failed after 3 attempts"
+          exit 1
+
       - name: Publish latest alias for default Ubuntu version
         shell: bash
         run: |
@@ -135,6 +175,7 @@ jobs:
               --push \
               --build-arg UBUNTU_VERSION="${{ env.DEFAULT_UBUNTU_VERSION }}" \
               -t "${{ env.IMAGE_NAME }}:latest" \
+              -t "${{ env.GHCR_IMAGE_NAME }}:latest" \
               .; then
               exit 0
             fi
