@@ -51,7 +51,7 @@ You can load variables from a local env file (keep secrets out of version contro
 docker run --env-file .env -it vergissberlin/ubuntu-development:24.04 zsh
 ```
 
-The image also ships a default global Git config in `/root/.gitconfig` (aliases, colors, `init.defaultBranch`, and similar). It does **not** set `user.name` / `user.email`; those come from the variables above when set. Paths match the container (for example `core.editor` is `nvim`, `core.excludesfile` points at `/root/.config/git/.gitignore_global`). Git LFS filter settings are not included because the image does not install `git-lfs`.
+The image also ships a default global Git config in `/root/.gitconfig` (aliases, colors, `init.defaultBranch`, Git LFS filter, and similar). It does **not** set `user.name` / `user.email`; those come from the variables above when set. Paths match the container (for example `core.editor` is `nvim`, `core.excludesfile` points at `/root/.config/git/.gitignore_global`).
 
 ### Apple Silicon (`linux/arm64`)
 
@@ -79,6 +79,7 @@ Optional utilities may change over time to keep the image security posture stron
 - [`curl`](https://curl.se/docs/) - Command-line tool and library for transferring data with URLs.
 - [`figlet`](http://www.figlet.org/) - Creates ASCII art text banners for terminal output.
 - [`git`](https://git-scm.com/doc) - Distributed version control system for source code management.
+- [`git-lfs`](https://git-lfs.com/) - Git extension for versioning large files.
 - [`just`](https://just.systems/man/en/) - Command runner to define and execute project tasks.
 - [`k6`](https://grafana.com/docs/k6/latest/) - Modern load testing tool for API and performance testing.
 - [`make`](https://www.gnu.org/software/make/manual/) - Build automation tool based on declarative rules.

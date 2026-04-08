@@ -12,6 +12,7 @@ RUN apt-get update && \
     fd-find \
     figlet \
     git \
+    git-lfs \
     make \
     mc \
     ripgrep \
