@@ -2,11 +2,6 @@ ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates curl gnupg && \
-    install -m 0755 -d /etc/apt/keyrings && \
-    curl -fsSL https://dl.k6.io/key.gpg | gpg --dearmor -o /etc/apt/keyrings/k6-archive-keyring.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" > /etc/apt/sources.list.d/k6.list && \
-    apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     bats \
@@ -14,7 +9,6 @@ RUN apt-get update && \
     curl \
     figlet \
     git \
-    k6 \
     make \
     mc \
     siege \
@@ -38,4 +32,21 @@ RUN apt-get update && \
     rm -f "/tmp/${JUST_ARCHIVE}" "/tmp/SHA256SUMS"; \
     chmod +x /usr/local/bin/just; \
     fi && \
+    K6_VERSION="1.3.0"; \
+    ARCH="$(dpkg --print-architecture)"; \
+    case "${ARCH}" in \
+    amd64) K6_TARGET="amd64" ;; \
+    arm64) K6_TARGET="arm64" ;; \
+    *) echo "Unsupported architecture for k6: ${ARCH}" && exit 1 ;; \
+    esac; \
+    K6_ARCHIVE="k6-v${K6_VERSION}-linux-${K6_TARGET}.tar.gz"; \
+    K6_DIR="k6-v${K6_VERSION}-linux-${K6_TARGET}"; \
+    curl -fsSLo "/tmp/${K6_ARCHIVE}" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/${K6_ARCHIVE}"; \
+    curl -fsSLo "/tmp/k6-checksums.txt" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/checksums.txt"; \
+    cd /tmp; \
+    grep " ${K6_ARCHIVE}\$" k6-checksums.txt | sha256sum --check --status; \
+    tar -xzf "${K6_ARCHIVE}" -C /tmp; \
+    mv "/tmp/${K6_DIR}/k6" /usr/local/bin/k6; \
+    chmod +x /usr/local/bin/k6; \
+    rm -rf "/tmp/${K6_ARCHIVE}" "/tmp/k6-checksums.txt" "/tmp/${K6_DIR}" && \
     rm -rf /var/lib/apt/lists/*
