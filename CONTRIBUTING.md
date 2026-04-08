@@ -43,6 +43,12 @@ docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 
 docker run --rm local/ubuntu-development:24.04 zsh -lc "echo $USER && test -d /root/.oh-my-zsh && echo omz_ok && zsh --version && git --version && curl --version && just --version && bats --version"
 ```
 
+Git identity from environment (smoke check):
+
+```bash
+docker run --rm -e GIT_USER_NAME="Test User" -e GIT_USER_EMAIL="test@example.com" local/ubuntu-development:24.04 zsh -lc 'test "$(git config --global --get user.name)" = "Test User" && test "$(git config --global --get user.email)" = "test@example.com" && echo git_env_ok'
+```
+
 ## Registry usage
 
 - Docker Hub image: `vergissberlin/ubuntu-development:<tag>`

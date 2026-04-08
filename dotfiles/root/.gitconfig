@@ -1,0 +1,56 @@
+# Default global Git settings for ubuntu-development (see dotfiles/root/.gitconfig).
+# Identity: set GIT_USER_NAME and GIT_USER_EMAIL at container runtime; they are applied on shell startup.
+
+[alias]
+	br = branch -av
+	ci = commit -a
+	co = checkout
+	di = diff
+	dump = cat-file -p
+	fush = push -f
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	prune = fetch origin --prune
+	sl = log --color --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
+	st = status --ignore-submodules=all
+	tush = push --tags
+	type = cat-file -t
+	up = !git fetch origin && git rebase origin/master
+	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+	master = checkout master
+	development = checkout development
+	staging = checkout staging
+	create-branch = !git push origin HEAD:refs/heads/ && git fetch origin && git branch --track  origin/ && cd . && git checkout 
+	delete-branch = !git push origin :refs/heads/ && git branch -D 
+	merge-branch = !git checkout master && git merge @{-1}
+	unadd = reset HEAD
+[core]
+	excludesfile = /root/.config/git/.gitignore_global
+	editor = nvim
+	autocrlf = input
+[branch]
+	autosetuprebase = always
+[remote "origin"]
+	tagopt = --tags
+[color "branch"]
+	current = yellow
+	local = cyan
+	remote = green
+[color "diff"]
+	meta = yellow
+	frag = magenta
+	old = cyan
+	new = green
+[color]
+	grep = auto
+	interactive = auto
+[color "push"]
+	default = current
+[color "status"]
+	added = green
+	changed = yellow
+[commit]
+	gpgsign = false
+[push]
+	autoSetupRemote = true
+[init]
+	defaultBranch = main

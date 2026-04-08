@@ -1,6 +1,8 @@
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
+COPY scripts/git-config-global-from-env.sh /usr/local/share/ubuntu-development/git-config-global-from-env.sh
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
@@ -71,13 +73,13 @@ RUN apt-get update && \
     rm -rf /root/.config/nvim/.git; \
     git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git /root/.oh-my-zsh; \
     git clone --depth 1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k; \
-    printf '%s\n' \
-      'export ZSH="$HOME/.oh-my-zsh"' \
-      'ZSH_THEME="powerlevel10k/powerlevel10k"' \
-      'plugins=(git)' \
-      'source $ZSH/oh-my-zsh.sh' \
-      > /root/.zshrc; \
     rm -rf "/tmp/${NVIM_ARCHIVE}" "/tmp/nvim-linux-${NVIM_TARGET}" && \
     rm -rf /var/lib/apt/lists/*
+
+COPY dotfiles/etc/profile.d/git-config-global-from-env.sh /etc/profile.d/git-config-global-from-env.sh
+COPY dotfiles/etc/zsh/zprofile /etc/zsh/zprofile
+COPY dotfiles/root/.zshrc /root/.zshrc
+COPY dotfiles/root/.config/git/.gitignore_global /root/.config/git/.gitignore_global
+COPY dotfiles/root/.gitconfig /root/.gitconfig
 
 CMD ["zsh", "-l"]

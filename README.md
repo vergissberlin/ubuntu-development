@@ -37,6 +37,22 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
 docker run -it ghcr.io/vergissberlin/ubuntu-development:latest zsh
 ```
 
+### Git identity (environment variables)
+
+Set `GIT_USER_NAME` and/or `GIT_USER_EMAIL` at container runtime. When a value is non-empty, the image applies it with `git config --global` during shell startup (via `/etc/profile.d` for POSIX login shells, `/etc/zsh/zprofile` and `/root/.zshrc` for zsh). Missing or empty variables do not remove an existing global Git identity.
+
+```bash
+docker run -e GIT_USER_NAME="Dev User" -e GIT_USER_EMAIL="dev@example.com" -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
+You can load variables from a local env file (keep secrets out of version control):
+
+```bash
+docker run --env-file .env -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
+The image also ships a default global Git config in `/root/.gitconfig` (aliases, colors, `init.defaultBranch`, and similar). It does **not** set `user.name` / `user.email`; those come from the variables above when set. Paths match the container (for example `core.editor` is `nvim`, `core.excludesfile` points at `/root/.config/git/.gitignore_global`). Git LFS filter settings are not included because the image does not install `git-lfs`.
+
 ### Apple Silicon (`linux/arm64`)
 
 Published tags are built for **`linux/amd64` and `linux/arm64`**, so `docker pull` on Apple Silicon should resolve a matching manifest. If you still see `no matching manifest for linux/arm64`, use a tag published after multi-arch landed, or temporarily force the amd64 variant (slower on Apple Silicon):
