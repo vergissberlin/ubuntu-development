@@ -28,3 +28,36 @@ Images are built and published from this repository via GitHub Actions:
 - `DOCKERHUB_TOKEN`
 
 Note: GHCR publishing uses `GITHUB_TOKEN` from GitHub Actions.
+
+## Local validation
+
+Run local checks before opening a PR:
+
+```bash
+docker build --build-arg UBUNTU_VERSION=22.04 -t local/ubuntu-development:22.04 .
+docker run --rm local/ubuntu-development:22.04 bash -lc "bash --version && git --version && curl --version && just --version && bats --version"
+
+docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
+docker run --rm local/ubuntu-development:24.04 bash -lc "bash --version && git --version && curl --version && just --version && bats --version"
+```
+
+## Registry usage
+
+- Docker Hub image: `vergissberlin/ubuntu-development:<tag>`
+- GHCR image: `ghcr.io/vergissberlin/ubuntu-development:<tag>`
+
+Examples:
+
+```bash
+docker run -it vergissberlin/ubuntu-development:24.04 bash
+docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 bash
+```
+
+## Troubleshooting
+
+- Docker Hub login fails in CI:
+  - Verify `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` secrets in repository settings.
+- GHCR push fails with permission errors:
+  - Confirm workflow permissions include `packages: write`.
+- `latest` tag update fails:
+  - Ensure the default Ubuntu tag (`24.04`) was successfully published first.

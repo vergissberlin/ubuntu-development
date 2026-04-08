@@ -1,0 +1,80 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  image-smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu_version:
+          - "22.04"
+          - "24.04"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+        with:
+          driver: docker
+
+      - name: Build image for smoke tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker buildx build \
+            --load \
+            --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" \
+            -t "local/ubuntu-development:${{ matrix.ubuntu_version }}" \
+            .
+
+      - name: Run smoke tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm "local/ubuntu-development:${{ matrix.ubuntu_version }}" bash -lc '
+            bash --version >/dev/null &&
+            git --version >/dev/null &&
+            curl --version >/dev/null &&
+            just --version >/dev/null &&
+            bats --version >/dev/null
+          '
+
+  vulnerability-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Build image for scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build \
+            --build-arg UBUNTU_VERSION="24.04" \
+            -t "local/ubuntu-development:scan" \
+            .
+
+      - name: Scan image with Trivy
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.64.1 image \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            --no-progress \
+            "local/ubuntu-development:scan"

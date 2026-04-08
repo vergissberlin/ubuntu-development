@@ -25,9 +25,53 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu_version:
+          - "22.04"
+          - "24.04"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+        with:
+          driver: docker
+
+      - name: Build local image for validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker buildx build \
+            --load \
+            --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" \
+            -t "local/ubuntu-development:${{ matrix.ubuntu_version }}" \
+            .
+
+      - name: Smoke test image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm "local/ubuntu-development:${{ matrix.ubuntu_version }}" bash -lc '
+            bash --version >/dev/null &&
+            git --version >/dev/null &&
+            curl --version >/dev/null &&
+            just --version >/dev/null &&
+            bats --version >/dev/null
+          '
+
   docker:
+    needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -37,7 +81,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Resolve release semver tag
         id: semver
@@ -51,44 +95,23 @@ jobs:
           echo "semver_tag=${semver_tag}" >> "${GITHUB_OUTPUT}"
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
         with:
           driver: docker
 
-      - name: Log in to Docker Hub (with retry)
+      - name: Log in to Docker Hub
         if: env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in 1 2 3; do
-            echo "Docker Hub login attempt ${attempt}/3"
-            if echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin; then
-              exit 0
-            fi
-            sleep $((attempt * 10))
-          done
-          echo "Docker Hub login failed after 3 attempts"
-          exit 1
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
 
-      - name: Log in to GHCR (with retry)
-        env:
-          GHCR_USERNAME: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in 1 2 3; do
-            echo "GHCR login attempt ${attempt}/3"
-            if echo "${GHCR_TOKEN}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin; then
-              exit 0
-            fi
-            sleep $((attempt * 10))
-          done
-          echo "GHCR login failed after 3 attempts"
-          exit 1
+      - name: Log in to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push (with retry)
         shell: bash
@@ -108,6 +131,8 @@ jobs:
               --push \
               --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" \
               --label "org.opencontainers.image.revision=${{ github.sha }}" \
+              --attest type=sbom \
+              --attest type=provenance \
               "${tags[@]}" \
               .; then
               exit 0
@@ -121,62 +146,53 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: docker
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
         with:
           driver: docker
 
-      - name: Log in to Docker Hub (with retry)
+      - name: Log in to Docker Hub
         if: env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in 1 2 3; do
-            echo "Docker Hub login attempt ${attempt}/3"
-            if echo "${DOCKERHUB_TOKEN}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin; then
-              exit 0
-            fi
-            sleep $((attempt * 10))
-          done
-          echo "Docker Hub login failed after 3 attempts"
-          exit 1
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
 
-      - name: Log in to GHCR (with retry)
-        env:
-          GHCR_USERNAME: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in 1 2 3; do
-            echo "GHCR login attempt ${attempt}/3"
-            if echo "${GHCR_TOKEN}" | docker login ghcr.io --username "${GHCR_USERNAME}" --password-stdin; then
-              exit 0
-            fi
-            sleep $((attempt * 10))
-          done
-          echo "GHCR login failed after 3 attempts"
-          exit 1
+      - name: Log in to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish latest alias for default Ubuntu version
+      - name: Alias latest to default Ubuntu image
         shell: bash
         run: |
           set -euo pipefail
+          dockerhub_latest_tagged=false
           for attempt in 1 2 3; do
             echo "Latest attempt ${attempt}/3"
-            if docker buildx build \
-              --push \
-              --build-arg UBUNTU_VERSION="${{ env.DEFAULT_UBUNTU_VERSION }}" \
+            if docker buildx imagetools create \
               -t "${{ env.IMAGE_NAME }}:latest" \
+              "${{ env.IMAGE_NAME }}:${{ env.DEFAULT_UBUNTU_VERSION }}"; then
+              dockerhub_latest_tagged=true
+              break
+            fi
+            sleep $((attempt * 15))
+          done
+          if [[ "${dockerhub_latest_tagged}" != "true" ]]; then
+            echo "Docker Hub latest alias failed after 3 attempts"
+            exit 1
+          fi
+          for attempt in 1 2 3; do
+            echo "GHCR latest attempt ${attempt}/3"
+            if docker buildx imagetools create \
               -t "${{ env.GHCR_IMAGE_NAME }}:latest" \
-              .; then
+              "${{ env.GHCR_IMAGE_NAME }}:${{ env.DEFAULT_UBUNTU_VERSION }}"; then
               exit 0
             fi
             sleep $((attempt * 15))
