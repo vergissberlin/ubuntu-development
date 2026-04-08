@@ -49,14 +49,14 @@ RUN apt-get update && \
     esac; \
     K6_ARCHIVE="k6-v${K6_VERSION}-linux-${K6_TARGET}.tar.gz"; \
     K6_DIR="k6-v${K6_VERSION}-linux-${K6_TARGET}"; \
-    curl -fsSLo "/tmp/${K6_ARCHIVE}" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/${K6_ARCHIVE}"; \
-    curl -fsSLo "/tmp/k6-checksums.txt" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/checksums.txt"; \
-    cd /tmp; \
-    grep " ${K6_ARCHIVE}\$" k6-checksums.txt | sha256sum --check --status; \
-    tar -xzf "${K6_ARCHIVE}" -C /tmp; \
-    mv "/tmp/${K6_DIR}/k6" /usr/local/bin/k6; \
-    chmod +x /usr/local/bin/k6; \
-    rm -rf "/tmp/${K6_ARCHIVE}" "/tmp/k6-checksums.txt" "/tmp/${K6_DIR}"; \
+    curl -fsSLo "/tmp/${K6_ARCHIVE}" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/${K6_ARCHIVE}" && \
+    curl -fsSLo "/tmp/k6-checksums.txt" "https://github.com/grafana/k6/releases/download/v${K6_VERSION}/k6-v${K6_VERSION}-checksums.txt" && \
+    cd /tmp && \
+    grep " ${K6_ARCHIVE}\$" k6-checksums.txt | sha256sum --check --status && \
+    tar -xzf "${K6_ARCHIVE}" -C /tmp && \
+    mv "/tmp/${K6_DIR}/k6" /usr/local/bin/k6 && \
+    chmod +x /usr/local/bin/k6 && \
+    rm -rf "/tmp/${K6_ARCHIVE}" "/tmp/k6-checksums.txt" "/tmp/${K6_DIR}" && \
     NVIM_VERSION="0.11.4"; \
     ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
