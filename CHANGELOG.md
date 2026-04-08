@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.3.0](https://github.com/vergissberlin/ubuntu-development/compare/1.2.0...1.3.0) (2026-04-08)
+
+
+### Features
+
+* Add Git LFS support in Dockerfile and update documentation to reflect new configuration options ([2f39aad](https://github.com/vergissberlin/ubuntu-development/commit/2f39aad4e1042b4ebf1e06cf0f7ef3a6e848cec1))
+* Add Powerlevel10k configuration support in Dockerfile and .zshrc; update CONTRIBUTING.md with local testing instructions ([1e05ec3](https://github.com/vergissberlin/ubuntu-development/commit/1e05ec3afa678df12bf716ef809d7e34d102faa5))
+* Add smoke test and vulnerability scan summaries to CI workflow for better visibility of build results ([d6ba3b1](https://github.com/vergissberlin/ubuntu-development/commit/d6ba3b10d98caa01616c6d5fd4dbb68850c69b1e))
+* Add support for Git identity configuration via environment variables; update Dockerfile and documentation to reflect new features ([b914585](https://github.com/vergissberlin/ubuntu-development/commit/b9145854acf2c1dd4607d5611397b3523bc9e0d8))
+* Add tmux and related plugins to Dockerfile; update README.md to include tmux documentation ([ec152ef](https://github.com/vergissberlin/ubuntu-development/commit/ec152efcdbcb24245499a07c20653242cf47cb01))
+* Enhance Dockerfile and tmux configuration for improved Zsh support; update CONTRIBUTING.md with tmux usage instructions ([dc07b81](https://github.com/vergissberlin/ubuntu-development/commit/dc07b81293b366669e8554d4aa4e99a2c07710ce))
+* Update Dockerfile to install Neovim and AstroNvim, enhancing development environment; update README.md and workflow to reflect changes ([3409e09](https://github.com/vergissberlin/ubuntu-development/commit/3409e09b349bd7e6cb65166e5e44afb63518b797))
+
+
+### Bug Fixes
+
+* Change exit code in Docker publish workflow from 1 to 0 to ensure successful completion of vulnerability checks ([84f9764](https://github.com/vergissberlin/ubuntu-development/commit/84f97643e7930a7335705b439d5c4e4cf68a84b7))
+* Update Dockerfile to correct checksum file URL for k6 installation and streamline command chaining ([b9c0ac4](https://github.com/vergissberlin/ubuntu-development/commit/b9c0ac497c79e756fcc13e851b63e3438cdd994b))
+
+
+### Code Refactoring
+
+* Update Powerlevel10k segment separators for improved prompt aesthetics in .p10k.zsh ([fd32433](https://github.com/vergissberlin/ubuntu-development/commit/fd324337189a242641948941d39b69f6cdf0744b))
+
+
+### Chores
+
+* Enhance Dockerfile and documentation by adding k6 load testing tool and updating usage instructions in README.md ([ba99f6b](https://github.com/vergissberlin/ubuntu-development/commit/ba99f6b211cd4042bbb283f3c2ea1f6be34d841d))
+* Enhance Dockerfile to include Oh My Zsh and Powerlevel10k theme; update CONTRIBUTING.md and README.md with new usage instructions ([aa51d3d](https://github.com/vergissberlin/ubuntu-development/commit/aa51d3de7fb69adee825c9a2a82e1ad5d6448b1c))
+* Refactor Dockerfile to install k6 directly from GitHub releases, removing previous installation method and ensuring compatibility with multiple architectures ([88f82e3](https://github.com/vergissberlin/ubuntu-development/commit/88f82e3fc6e330b161dc6f61ccba8a50fb2db4c6))
+* Replace Trivy action with direct Docker command for security scanning in CI workflow; update to latest Trivy version and improve error handling ([c20be8e](https://github.com/vergissberlin/ubuntu-development/commit/c20be8e3a4a8ecc944a25c7fbf7877195f1ec4dc))
+* Update CI workflow to use latest actions/checkout and docker/setup-buildx-action versions; change exit code for vulnerability scan to ensure successful completion ([5b5be18](https://github.com/vergissberlin/ubuntu-development/commit/5b5be18051e5ba6880be8b93d5e350bd39bc3d44))
+* Update CONTRIBUTING.md and README.md with Apple Silicon support details; enhance Docker publish workflow for multi-architecture builds ([2733dab](https://github.com/vergissberlin/ubuntu-development/commit/2733dab3d51d7f4cbc3cef826b3ef80d3687f242))
+* Update CONTRIBUTING.md to change shell code block syntax from 'shell' to 'bash' for improved clarity ([3e22a54](https://github.com/vergissberlin/ubuntu-development/commit/3e22a54132b278936a3fdd4dd457e6aa7910cc81))
+* Update Dockerfile to remove unnecessary packages and enhance security posture; add security scan step in workflow ([3650667](https://github.com/vergissberlin/ubuntu-development/commit/36506672f16bbdcbd40dc18e2d1e85f49d1795e1))
+* Update documentation and scripts to use zsh as the default shell; enhance CONTRIBUTING.md and README.md with updated usage examples ([6cf590e](https://github.com/vergissberlin/ubuntu-development/commit/6cf590ec2d14d79f4be26b9c84b037e1b8fc1cf6))
+
 ## [1.2.0](https://github.com/vergissberlin/ubuntu-development/compare/1.1.0...1.2.0) (2026-04-08)
 
 ### Features
