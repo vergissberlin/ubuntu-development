@@ -69,5 +69,15 @@ RUN apt-get update && \
     rm -rf /root/.config/nvim /root/.local/share/nvim /root/.local/state/nvim /root/.cache/nvim; \
     git clone --depth 1 https://github.com/AstroNvim/template /root/.config/nvim; \
     rm -rf /root/.config/nvim/.git; \
+    git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git /root/.oh-my-zsh; \
+    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k; \
+    printf '%s\n' \
+      'export ZSH="$HOME/.oh-my-zsh"' \
+      'ZSH_THEME="powerlevel10k/powerlevel10k"' \
+      'plugins=(git)' \
+      'source $ZSH/oh-my-zsh.sh' \
+      > /root/.zshrc; \
     rm -rf "/tmp/${NVIM_ARCHIVE}" "/tmp/nvim-linux-${NVIM_TARGET}" && \
     rm -rf /var/lib/apt/lists/*
+
+CMD ["zsh", "-l"]

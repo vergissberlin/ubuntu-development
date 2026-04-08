@@ -19,6 +19,8 @@ Version-specific tags are recommended for reproducible environments.
 
 ## Usage
 
+Containers run as `root` by default and start with Oh My Zsh enabled.
+
 ```bash
 docker run -it vergissberlin/ubuntu-development:24.04 zsh
 ```
@@ -113,5 +115,5 @@ Contribution and release details are documented in [`CONTRIBUTING.md`](CONTRIBUT
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 zsh -lc "zsh --version && git --version && just --version && k6 version && nvim --version | head -n 1 && bats --version"
+docker run --rm local/ubuntu-development:24.04 zsh -lc "echo $USER && test -d /root/.oh-my-zsh && echo omz_ok && zsh --version && git --version && just --version && k6 version && nvim --version | head -n 1 && bats --version"
 ```

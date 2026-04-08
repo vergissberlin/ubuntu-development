@@ -35,12 +35,12 @@ Run local checks before opening a PR:
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=22.04 -t local/ubuntu-development:22.04 .
-docker run --rm local/ubuntu-development:22.04 zsh -lc "zsh --version && git --version && curl --version && just --version && bats --version"
+docker run --rm local/ubuntu-development:22.04 zsh -lc "echo $USER && test -d /root/.oh-my-zsh && echo omz_ok && zsh --version && git --version && curl --version && just --version && bats --version"
 ```
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 zsh -lc "zsh --version && git --version && curl --version && just --version && bats --version"
+docker run --rm local/ubuntu-development:24.04 zsh -lc "echo $USER && test -d /root/.oh-my-zsh && echo omz_ok && zsh --version && git --version && curl --version && just --version && bats --version"
 ```
 
 ## Registry usage
