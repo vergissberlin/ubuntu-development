@@ -51,6 +51,15 @@ jobs:
             bats --version >/dev/null
           '
 
+      - name: Smoke test summary
+        if: success()
+        run: |
+          {
+            echo "### Smoke test (Ubuntu ${{ matrix.ubuntu_version }})"
+            echo ""
+            echo "Docker image built and smoke checks passed for **${{ matrix.ubuntu_version }}**."
+          } >> "${GITHUB_STEP_SUMMARY}"
+
   vulnerability-scan:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -78,3 +87,12 @@ jobs:
             --exit-code 0 \
             --no-progress \
             "local/ubuntu-development:scan"
+
+      - name: Vulnerability scan summary
+        if: success()
+        run: |
+          {
+            echo "### Vulnerability scan (Trivy)"
+            echo ""
+            echo "Scanned \`local/ubuntu-development:scan\` (HIGH/CRITICAL, \`--exit-code 0\`)."
+          } >> "${GITHUB_STEP_SUMMARY}"

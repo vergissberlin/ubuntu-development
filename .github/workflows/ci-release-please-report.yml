@@ -1,0 +1,140 @@
+name: ci-release-please-report
+
+# Posts or updates a single CI summary comment on Release Please PRs after `ci` finishes.
+# workflow_run is evaluated from the default branch; merge this workflow to `main` to activate.
+
+on:
+  workflow_run:
+    workflows:
+      - ci
+    types:
+      - completed
+
+concurrency:
+  group: ci-release-please-report-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  report:
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Upsert CI summary comment
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        # v8.0.0
+        with:
+          script: |
+            const marker = "<!-- ci-release-please-report -->";
+            const run = context.payload.workflow_run;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const conclusion = run.conclusion ?? "unknown";
+            const runUrl = run.html_url;
+            const rpPrefix = "release-please--";
+
+            /** @type {{ number: number, headRef: string }[]} */
+            let prs = [];
+
+            const minimal = run.pull_requests ?? [];
+            if (minimal.length > 0) {
+              prs = minimal.map((p) => ({
+                number: p.number,
+                headRef: p.head?.ref ?? "",
+              }));
+            }
+
+            if (prs.length === 0 && run.head_sha) {
+              const assoc = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner,
+                repo,
+                commit_sha: run.head_sha,
+              });
+              prs = assoc.data.map((p) => ({
+                number: p.number,
+                headRef: p.head.ref,
+              }));
+            }
+
+            if (prs.length === 0 && run.head_branch) {
+              const listed = await github.rest.pulls.list({
+                owner,
+                repo,
+                state: "open",
+                head: `${owner}:${run.head_branch}`,
+                per_page: 10,
+              });
+              prs = listed.data.map((p) => ({
+                number: p.number,
+                headRef: p.head.ref,
+              }));
+            }
+
+            const targetPrs = prs.filter((p) => p.headRef.startsWith(rpPrefix));
+            if (targetPrs.length === 0) {
+              core.info("No open PR with head ref starting with release-please-- for this run; skipping.");
+              return;
+            }
+
+            let jobLines = "_Could not load job list._";
+            try {
+              const jobsResp = await github.rest.actions.listJobsForWorkflowRun({
+                owner,
+                repo,
+                run_id: run.id,
+                per_page: 100,
+              });
+              jobLines = jobsResp.data.jobs
+                .map((j) => `- **${j.name}**: \`${j.conclusion ?? "unknown"}\``)
+                .join("\n");
+            } catch (e) {
+              core.warning(`listJobsForWorkflowRun failed: ${e}`);
+            }
+
+            const body = [
+              marker,
+              "",
+              "## CI results (Release Please PR)",
+              "",
+              `**Overall:** \`${conclusion}\``,
+              "",
+              `**Workflow run:** ${runUrl}`,
+              "",
+              "### Jobs",
+              "",
+              jobLines,
+              "",
+              `_Updated from workflow run \`${run.id}\`._`,
+            ].join("\n");
+
+            for (const pr of targetPrs) {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner,
+                repo,
+                issue_number: pr.number,
+                per_page: 100,
+              });
+              const existing = comments.find((c) => c.body?.includes(marker));
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body,
+                });
+                core.info(`Updated comment ${existing.id} on PR #${pr.number}`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  body,
+                });
+                core.info(`Created comment on PR #${pr.number}`);
+              }
+            }
