@@ -6,7 +6,7 @@ Docker Ubuntu image for development, testing, and deployment tasks.
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-vergissberlin%2Fubuntu--development-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
 [![Docker Pulls](https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development?style=flat-square)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
 [![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fvergissberlin%2Fubuntu--development-181717?logo=github&logoColor=white)](https://github.com/vergissberlin/ubuntu-development/pkgs/container/ubuntu-development)
-[![Play with Docker](https://img.shields.io/badge/Try%20Online-Play%20with%20Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://labs.play-with-docker.com/?stack=https%3A%2F%2Fraw.githubusercontent.com%2Fvergissberlin%2Fubuntu-development%2Fmain%2Fpwd.stack.yml)
+[![Docker HOL](https://img.shields.io/badge/Try%20Online-Docker%20HOL-2496ED?style=flat-square&logo=docker&logoColor=white)](https://dockerhol.com/)
 
 ## Supported tags
 
@@ -37,11 +37,11 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:latest bash
 
 ### Try online
 
-Launch this image directly in your browser via Play with Docker:
+Launch a browser-based Docker playground via Docker HOL:
 
-[Open in Play with Docker](https://labs.play-with-docker.com/?stack=https%3A%2F%2Fraw.githubusercontent.com%2Fvergissberlin%2Fubuntu-development%2Fmain%2Fpwd.stack.yml)
+[Open Docker HOL](https://dockerhol.com/)
 
-Note: Play with Docker sessions are ephemeral and intended for quick experiments.
+Alternative: use [GitHub Codespaces](https://docs.github.com/en/codespaces) for a full cloud development environment.
 
 ## Installed packages
 
