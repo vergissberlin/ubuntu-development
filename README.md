@@ -20,19 +20,19 @@ Version-specific tags are recommended for reproducible environments.
 ## Usage
 
 ```bash
-docker run -it vergissberlin/ubuntu-development:24.04 bash
+docker run -it vergissberlin/ubuntu-development:24.04 zsh
 ```
 
 ```bash
-docker run -it vergissberlin/ubuntu-development:22.04 bash
+docker run -it vergissberlin/ubuntu-development:22.04 zsh
 ```
 
 ```bash
-docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 bash
+docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
 ```
 
 ```bash
-docker run -it ghcr.io/vergissberlin/ubuntu-development:latest bash
+docker run -it ghcr.io/vergissberlin/ubuntu-development:latest zsh
 ```
 
 ### Try online
@@ -48,6 +48,7 @@ Alternative: use [GitHub Codespaces](https://docs.github.com/en/codespaces) for 
 Optional utilities may change over time to keep the image security posture strong.
 
 - [`bash`](https://www.gnu.org/software/bash/manual/) - GNU shell for scripting and interactive command execution.
+- [`zsh`](https://zsh.sourceforge.io/) - Interactive shell used as the default container entry shell in usage examples.
 - [`bats`](https://bats-core.readthedocs.io/) - Bash Automated Testing System for shell script tests.
 - [`curl`](https://curl.se/docs/) - Command-line tool and library for transferring data with URLs.
 - [`figlet`](http://www.figlet.org/) - Creates ASCII art text banners for terminal output.
@@ -104,5 +105,5 @@ Contribution and release details are documented in [`CONTRIBUTING.md`](CONTRIBUT
 
 ```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 bash -lc "git --version && just --version && k6 version && nvim --version | head -n 1 && bats --version"
+docker run --rm local/ubuntu-development:24.04 zsh -lc "zsh --version && git --version && just --version && k6 version && nvim --version | head -n 1 && bats --version"
 ```

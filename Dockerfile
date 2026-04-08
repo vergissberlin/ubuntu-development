@@ -15,7 +15,8 @@ RUN apt-get update && \
     ripgrep \
     siege \
     unzip \
-    wget && \
+    wget \
+    zsh && \
     if apt-cache show just >/dev/null 2>&1; then \
     apt-get install -y --no-install-recommends just; \
     else \

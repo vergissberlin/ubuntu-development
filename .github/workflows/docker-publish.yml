@@ -57,8 +57,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          docker run --rm "local/ubuntu-development:${{ matrix.ubuntu_version }}" bash -lc '
-            bash --version >/dev/null &&
+          docker run --rm "local/ubuntu-development:${{ matrix.ubuntu_version }}" zsh -lc '
+            zsh --version >/dev/null &&
             git --version >/dev/null &&
             curl --version >/dev/null &&
             just --version >/dev/null &&

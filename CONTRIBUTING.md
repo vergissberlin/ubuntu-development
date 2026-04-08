@@ -33,12 +33,14 @@ Note: GHCR publishing uses `GITHUB_TOKEN` from GitHub Actions.
 
 Run local checks before opening a PR:
 
-```bash
+```shell
 docker build --build-arg UBUNTU_VERSION=22.04 -t local/ubuntu-development:22.04 .
-docker run --rm local/ubuntu-development:22.04 bash -lc "bash --version && git --version && curl --version && just --version && bats --version"
+docker run --rm local/ubuntu-development:22.04 zsh -lc "zsh --version && git --version && curl --version && just --version && bats --version"
+```
 
+```bash
 docker build --build-arg UBUNTU_VERSION=24.04 -t local/ubuntu-development:24.04 .
-docker run --rm local/ubuntu-development:24.04 bash -lc "bash --version && git --version && curl --version && just --version && bats --version"
+docker run --rm local/ubuntu-development:24.04 zsh -lc "zsh --version && git --version && curl --version && just --version && bats --version"
 ```
 
 ## Registry usage
@@ -49,8 +51,13 @@ docker run --rm local/ubuntu-development:24.04 bash -lc "bash --version && git -
 Examples:
 
 ```bash
-docker run -it vergissberlin/ubuntu-development:24.04 bash
-docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 bash
+docker pull vergissberlin/ubuntu-development:24.04
+docker run -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
+```bash
+docker pull ghcr.io/vergissberlin/ubuntu-development:24.04
+docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
 ```
 
 ## Troubleshooting
