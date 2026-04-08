@@ -13,12 +13,14 @@ RUN apt-get update && \
     figlet \
     git \
     git-lfs \
+    less \
     make \
     mc \
     ncurses-term \
     ripgrep \
     siege \
     tmux \
+    tree \
     unzip \
     wget \
     zsh && \
