@@ -1,59 +1,66 @@
 # ubuntu-development
 
-> Docker ubuntu image to use for development, testing and deployment.
+Docker Ubuntu image for development, testing, and deployment tasks.
 
-| Docker base image   | Docker image              | Tag               | Size   | Pulls  | Build  | Status |
-| ------------------- | ------------------------- | ----------------- | ------ | ------ | ------ | ------ |
-| [ubuntu][1]         | [ubuntu-development][2]   | [latest][3]       | ![][4] | ![][5] | ![][6] | ![][7] |
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-vergissberlin%2Fubuntu--development-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
+[![Docker Pulls](https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development?style=flat-square)](https://hub.docker.com/r/vergissberlin/ubuntu-development)
+[![Build](https://img.shields.io/github/actions/workflow/status/vergissberlin/ubuntu-development/docker-publish.yml?branch=main&style=flat-square)](https://github.com/vergissberlin/ubuntu-development/actions/workflows/docker-publish.yml)
 
-[1]: https://hub.docker.com/_/ubuntu/
-[2]: https://hub.docker.com/r/vergissberlin/ubuntu-development/
-[3]: https://hub.docker.com/r/vergissberlin/ubuntu-development/tags/
-[4]: https://images.microbadger.com/badges/image/vergissberlin/ubuntu-development.svg
-[5]: https://img.shields.io/docker/pulls/vergissberlin/ubuntu-development.svg?style=flat-square
-[6]: https://img.shields.io/docker/automated/vergissberlin/ubuntu-development.svg?style=flat-square
-[7]: https://img.shields.io/docker/build/vergissberlin/ubuntu-development.svg?style=flat-square
+## Supported tags
 
+- `22.04`
+- `24.04`
+- `latest` (alias for `24.04`)
 
-## Promise
+Version-specific tags are recommended for reproducible environments.
 
-> You will **always get the latest** build from the base image with additional installed packages. 
-> An [concourse ci](http://concourse.ci) instance is watching on changes. It starts to rebuild the image and push it to the registry immediately.
+## Publish pipeline
 
+Images are built and published from this repository via GitHub Actions:
 
-## Installed packages
+- Workflow: `.github/workflows/docker-publish.yml`
+- Trigger: push to `main` and manual `workflow_dispatch`
+- Registry: Docker Hub `vergissberlin/ubuntu-development`
 
-| Package       | Description                                                                                                |
-| ------------- | ---------------------------------------------------------------------------------------------------------- | 
-| bash          | Bash is a Unix shell and command language as a free software replacement for the Bourne shell.             |
-| bats          | Bats is a TAP-compliant testing framework for Bash. It provides a simple way to verify that the UNIX programs you write behave as expected. |
-| curl          | cURL is a computer software project providing a library and command-line tool for transferring data using various protocols. |
-| figlet        | FIGlet generates text banners, in a variety of typefaces, composed of letters made up of conglomerations of smaller ASCII characters (see ASCII art). |
-| git           | Git is a version control system (VCS) for tracking changes in computer files and coordinating work on those files among multiple people. |
-| make          | Make is a build automation tool that automatically builds executable programs and libraries from source code. |
-| mc            | GNU Midnight Commander (also known as mc) is a free cross-platform orthodox file manager.                  |
-| siege         | Siege is an open source regression test and benchmark utility. It can stress test a single URL with a user defined number of simulated users, or it can read many URLs into memory and stress them simultaneously. |
-| wget          | GNU Wget is a computer program that retrieves content from web servers.                                    |
-| vim           | Vim is a clone of Bill Joy's vi text editor program for Unix.                                              |
+### Required repository secrets
 
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
 
 ## Usage
 
-        docker run -it vergissberlin/ubuntu-development:latest bash
+```bash
+docker run -it vergissberlin/ubuntu-development:24.04 bash
+```
+
+```bash
+docker run -it vergissberlin/ubuntu-development:22.04 bash
+```
+
+## Installed packages
+
+- `bash`
+- `bats`
+- `curl`
+- `figlet`
+- `git`
+- `make`
+- `mc`
+- `siege`
+- `vim`
+- `wget`
 
 ## Docker registry
 
-https://hub.docker.com/r/vergissberlin/ubuntu-development/
+[Docker Hub repository](https://hub.docker.com/r/vergissberlin/ubuntu-development/)
 
 ## Similar images
 
-| Name                  | Git       | Docker       |
-| --------------------- | --------- | ------------ |
-| alpine-development    | [git][10] | [docker][15] |
-| centos-development    | [git][20] | [docker][25] |
-| debian-development    | [git][30] | [docker][35] |
-| fedora-development    | [git][40] | [docker][45] |
-| opensuse-development  | [git][50] | [docker][55] |
+- alpine-development: [git][10], [docker][15]
+- centos-development: [git][20], [docker][25]
+- debian-development: [git][30], [docker][35]
+- fedora-development: [git][40], [docker][45]
+- opensuse-development: [git][50], [docker][55]
 
 [10]: https://github.com/vergissberlin/alpine-development
 [15]: https://hub.docker.com/r/vergissberlin/alpine-development/

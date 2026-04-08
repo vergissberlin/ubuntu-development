@@ -2,5 +2,24 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "dockerfile": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Keep GitHub Actions current",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github-actions dependencies"
+    },
+    {
+      "description": "Keep Docker base image up to date",
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "groupName": "docker base image updates"
+    }
   ]
 }
