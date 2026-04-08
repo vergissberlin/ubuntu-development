@@ -11,6 +11,7 @@ Docker Ubuntu image for development, testing, and deployment tasks.
 - `22.04`
 - `24.04`
 - `latest` (alias for `24.04`)
+- `<x.y.z>` (Release Please SemVer tags, for example `1.2.3`)
 
 Version-specific tags are recommended for reproducible environments.
 
@@ -18,9 +19,19 @@ Version-specific tags are recommended for reproducible environments.
 
 Images are built and published from this repository via GitHub Actions:
 
+- Release orchestration: `.github/workflows/release-please.yml`
 - Workflow: `.github/workflows/docker-publish.yml`
-- Trigger: push to `main` and manual `workflow_dispatch`
+- Trigger: push to `main`, SemVer tags (`*.*.*`), and manual `workflow_dispatch`
 - Registry: Docker Hub `vergissberlin/ubuntu-development`
+
+### Release flow
+
+1. Merge Conventional Commit changes into `main`.
+2. Release Please updates or creates a release PR with version bump metadata and `CHANGELOG.md`.
+3. Merge the release PR to create a GitHub Release and tag (`X.Y.Z`).
+4. The Docker publish workflow runs on that tag and publishes `vergissberlin/ubuntu-development:X.Y.Z`.
+
+`CHANGELOG.md` is maintained automatically from Conventional Commit history.
 
 ### Required repository secrets
 

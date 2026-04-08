@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "*.*.*"
   schedule:
     - cron: "0 4 * * 1"
   workflow_dispatch:
@@ -32,6 +34,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Resolve release semver tag
+        id: semver
+        shell: bash
+        run: |
+          set -euo pipefail
+          semver_tag=""
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            semver_tag="${BASH_REMATCH[1]}"
+          fi
+          echo "semver_tag=${semver_tag}" >> "${GITHUB_OUTPUT}"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -51,14 +64,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          tags=(
+            "-t" "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}"
+            "-t" "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}-${GITHUB_SHA::7}"
+          )
+          if [[ "${{ steps.semver.outputs.semver_tag }}" != "" && "${{ matrix.ubuntu_version }}" == "${{ env.DEFAULT_UBUNTU_VERSION }}" ]]; then
+            tags+=("-t" "${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}")
+          fi
           for attempt in 1 2 3; do
             echo "Build attempt ${attempt}/3"
             if docker buildx build \
               --push \
               --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" \
               --label "org.opencontainers.image.revision=${{ github.sha }}" \
-              -t "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}" \
-              -t "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}-${GITHUB_SHA::7}" \
+              "${tags[@]}" \
               .; then
               exit 0
             fi
