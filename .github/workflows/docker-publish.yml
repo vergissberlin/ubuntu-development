@@ -121,6 +121,10 @@ jobs:
             "-t" "${{ env.IMAGE_NAME }}:${{ matrix.ubuntu_version }}"
             "-t" "${{ env.GHCR_IMAGE_NAME }}:${{ matrix.ubuntu_version }}"
           )
+          if [[ "${{ steps.semver.outputs.semver_tag }}" != "" ]]; then
+            tags+=("-t" "${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}-${{ matrix.ubuntu_version }}")
+            tags+=("-t" "${{ env.GHCR_IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}-${{ matrix.ubuntu_version }}")
+          fi
           if [[ "${{ steps.semver.outputs.semver_tag }}" != "" && "${{ matrix.ubuntu_version }}" == "${{ env.DEFAULT_UBUNTU_VERSION }}" ]]; then
             tags+=("-t" "${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}")
             tags+=("-t" "${{ env.GHCR_IMAGE_NAME }}:${{ steps.semver.outputs.semver_tag }}")
