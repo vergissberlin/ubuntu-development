@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  ubuntu-development:
+    image: vergissberlin/ubuntu-development:latest
+    command: ["bash"]
+    tty: true
