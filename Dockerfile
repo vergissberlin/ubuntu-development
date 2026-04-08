@@ -15,6 +15,7 @@ RUN apt-get update && \
     git-lfs \
     make \
     mc \
+    ncurses-term \
     ripgrep \
     siege \
     tmux \
@@ -78,8 +79,13 @@ RUN apt-get update && \
     mkdir -p /root/.tmux/plugins && \
     git clone --depth 1 https://github.com/tmux-plugins/tpm /root/.tmux/plugins/tpm && \
     git clone --depth 1 https://github.com/erikw/tmux-powerline /root/.tmux/plugins/tmux-powerline; \
+    usermod -s /usr/bin/zsh root && \
     rm -rf "/tmp/${NVIM_ARCHIVE}" "/tmp/nvim-linux-${NVIM_TARGET}" && \
     rm -rf /var/lib/apt/lists/*
+
+ENV SHELL=/usr/bin/zsh
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 COPY dotfiles/etc/profile.d/git-config-global-from-env.sh /etc/profile.d/git-config-global-from-env.sh
 COPY dotfiles/etc/zsh/zprofile /etc/zsh/zprofile

@@ -87,3 +87,5 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
   - The image must include the `zsh` package (see `Dockerfile`). Rebuild locally or wait for a new publish after that change merged.
 - Powerlevel10k shows empty boxes or missing folder icons in the prompt:
   - The theme uses Nerd Font glyphs. Install a Nerd Font (e.g. [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md)) and set **Cursor** or your terminal to use it (e.g. setting id `terminal.integrated.fontFamily` to `MesloLGS NF` or the exact PostScript name).
+- Prompt looks fine outside tmux but wrong inside tmux (slashes, underscores instead of powerline caps):
+  - Rebuild the image (UTF-8 `LANG` / `LC_ALL`, `tmux-256color`, true-color hints in `dotfiles/root/.tmux.conf`). Fully quit tmux and start a new session so `$TERM` updates. The host terminal must still use a **Nerd Font**; enable true color in the client if needed (e.g. iTerm “TrueColor”, or `export COLORTERM=truecolor` before attaching).
