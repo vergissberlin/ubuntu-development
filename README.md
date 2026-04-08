@@ -45,17 +45,17 @@ Alternative: use [GitHub Codespaces](https://docs.github.com/en/codespaces) for 
 
 ## Installed packages
 
+Optional utilities may change over time to keep the image security posture strong.
+
 - [`bash`](https://www.gnu.org/software/bash/manual/) - GNU shell for scripting and interactive command execution.
 - [`bats`](https://bats-core.readthedocs.io/) - Bash Automated Testing System for shell script tests.
 - [`curl`](https://curl.se/docs/) - Command-line tool and library for transferring data with URLs.
 - [`figlet`](http://www.figlet.org/) - Creates ASCII art text banners for terminal output.
 - [`git`](https://git-scm.com/doc) - Distributed version control system for source code management.
-- [`httpie`](https://httpie.io/docs) - User-friendly CLI HTTP client for testing APIs.
 - [`just`](https://just.systems/man/en/) - Command runner to define and execute project tasks.
 - [`make`](https://www.gnu.org/software/make/manual/) - Build automation tool based on declarative rules.
 - [`mc`](https://midnight-commander.org/wiki/doc) - Midnight Commander terminal file manager.
 - [`siege`](https://www.joedog.org/siege-manual/) - HTTP load testing and benchmarking utility.
-- [`vim`](https://vimhelp.org/) - Highly configurable terminal text editor.
 - [`wget`](https://www.gnu.org/software/wget/manual/wget.html) - Non-interactive downloader for HTTP, HTTPS, and FTP.
 
 ## Docker registry

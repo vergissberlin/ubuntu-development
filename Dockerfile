@@ -2,17 +2,16 @@ ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     bats \
     ca-certificates \
     curl \
     figlet \
     git \
-    httpie \
     make \
     mc \
     siege \
-    vim \
     wget && \
     if apt-cache show just >/dev/null 2>&1; then \
     apt-get install -y --no-install-recommends just; \

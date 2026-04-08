@@ -65,6 +65,15 @@ jobs:
             bats --version >/dev/null
           '
 
+      - name: Security scan (fixable HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@v0.33.1
+        with:
+          image-ref: "local/ubuntu-development:${{ matrix.ubuntu_version }}"
+          vuln-type: "os,library"
+          severity: "HIGH,CRITICAL"
+          ignore-unfixed: true
+          exit-code: "1"
+
   docker:
     needs: validate
     runs-on: ubuntu-latest
