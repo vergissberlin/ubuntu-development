@@ -44,6 +44,8 @@ docker run -it vergissberlin/ubuntu-development:22.04 bash
 - `curl`
 - `figlet`
 - `git`
+- `httpie`
+- `just`
 - `make`
 - `mc`
 - `siege`

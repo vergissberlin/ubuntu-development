@@ -7,6 +7,8 @@ RUN apt-get update && \
     curl \
     figlet \
     git \
+    httpie \
+    just \
     make \
     mc \
     siege \
