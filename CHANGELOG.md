@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/vergissberlin/ubuntu-development/compare/1.3.0...1.4.0) (2026-04-08)
+
+
+### Features
+
+* Add 'less' and 'tree' utilities to Dockerfile; update README.md to reflect new dependencies ([4fa1ee8](https://github.com/vergissberlin/ubuntu-development/commit/4fa1ee83e2fb706db1f367b9df75aed94ba28af8))
+* Update documentation for multi-architecture Docker support and enhance CI workflows with QEMU setup for better compatibility on Apple Silicon ([fc170b0](https://github.com/vergissberlin/ubuntu-development/commit/fc170b0eba47b2cf4d44c549f1a086cffc013313))
+
+
+### Chores
+
+* Update LICENSE year to 2026 and remove obsolete pwd.stack.yml configuration file ([b53c912](https://github.com/vergissberlin/ubuntu-development/commit/b53c91247b1280d62463c829a2a1ecb10886db20))
+
 ## [1.3.0](https://github.com/vergissberlin/ubuntu-development/compare/1.2.0...1.3.0) (2026-04-08)
 
 
