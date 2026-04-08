@@ -68,3 +68,7 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
   - Confirm workflow permissions include `packages: write`.
 - `latest` tag update fails:
   - Ensure the default Ubuntu tag (`24.04`) was successfully published first.
+- `no matching manifest for linux/arm64` on Apple Silicon:
+  - Prefer a tag built with multi-arch (`linux/amd64` + `linux/arm64`). Until that image exists, use `docker run --platform linux/amd64 ...` as a workaround.
+- `exec: "zsh": executable file not found`:
+  - The image must include the `zsh` package (see `Dockerfile`). Rebuild locally or wait for a new publish after that change merged.

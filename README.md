@@ -35,6 +35,14 @@ docker run -it ghcr.io/vergissberlin/ubuntu-development:24.04 zsh
 docker run -it ghcr.io/vergissberlin/ubuntu-development:latest zsh
 ```
 
+### Apple Silicon (`linux/arm64`)
+
+Published tags are built for **`linux/amd64` and `linux/arm64`**, so `docker pull` on Apple Silicon should resolve a matching manifest. If you still see `no matching manifest for linux/arm64`, use a tag published after multi-arch landed, or temporarily force the amd64 variant (slower on Apple Silicon):
+
+```bash
+docker run --platform linux/amd64 -it vergissberlin/ubuntu-development:24.04 zsh
+```
+
 ### Try online
 
 Launch a browser-based Docker playground via Docker HOL:
