@@ -17,6 +17,7 @@ RUN apt-get update && \
     mc \
     ripgrep \
     siege \
+    tmux \
     unzip \
     wget \
     zsh && \
@@ -74,6 +75,9 @@ RUN apt-get update && \
     rm -rf /root/.config/nvim/.git; \
     git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git /root/.oh-my-zsh; \
     git clone --depth 1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k; \
+    mkdir -p /root/.tmux/plugins && \
+    git clone --depth 1 https://github.com/tmux-plugins/tpm /root/.tmux/plugins/tpm && \
+    git clone --depth 1 https://github.com/erikw/tmux-powerline /root/.tmux/plugins/tmux-powerline; \
     rm -rf "/tmp/${NVIM_ARCHIVE}" "/tmp/nvim-linux-${NVIM_TARGET}" && \
     rm -rf /var/lib/apt/lists/*
 
@@ -82,5 +86,7 @@ COPY dotfiles/etc/zsh/zprofile /etc/zsh/zprofile
 COPY dotfiles/root/.zshrc /root/.zshrc
 COPY dotfiles/root/.config/git/.gitignore_global /root/.config/git/.gitignore_global
 COPY dotfiles/root/.gitconfig /root/.gitconfig
+COPY dotfiles/root/.tmux.conf /root/.tmux.conf
+COPY dotfiles/root/.vimrc /root/.vimrc
 
 CMD ["zsh", "-l"]

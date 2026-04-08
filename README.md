@@ -87,6 +87,7 @@ Optional utilities may change over time to keep the image security posture stron
 - [`neovim`](https://neovim.io/) - Modern Vim-based editor used as the AstroNvim runtime.
 - [`AstroNvim`](https://astronvim.com/) - Preconfigured Neovim distribution installed in `/root/.config/nvim`.
 - [`siege`](https://www.joedog.org/siege-manual/) - HTTP load testing and benchmarking utility.
+- [`tmux`](https://github.com/tmux/tmux/wiki) - Terminal multiplexer; default config in `/root/.tmux.conf` with [TPM](https://github.com/tmux-plugins/tpm) and [`erikw/tmux-powerline`](https://github.com/erikw/tmux-powerline).
 - [`wget`](https://www.gnu.org/software/wget/manual/wget.html) - Non-interactive downloader for HTTP, HTTPS, and FTP.
 
 ## Docker registry
