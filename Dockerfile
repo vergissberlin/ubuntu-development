@@ -1,4 +1,4 @@
-ARG UBUNTU_VERSION=24.04
+ARG UBUNTU_VERSION=26.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 COPY scripts/git-config-global-from-env.sh /usr/local/share/ubuntu-development/git-config-global-from-env.sh
